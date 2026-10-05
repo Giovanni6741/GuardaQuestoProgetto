@@ -1,0 +1,43 @@
+﻿@page
+@model PariniFSL.Pages.Activities.IndexModel
+
+@{
+    ViewData["Title"] = "Percorsi e attività";
+}
+
+<h1>Percorsi e attività</h1>
+
+@if (Model.Activities.Count == 0)
+{
+    <p>Non ci sono ancora attività.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var activity in Model.Activities)
+        {
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">@activity.Title</h2>
+
+                        @if (!string.IsNullOrWhiteSpace(activity.Description))
+                        {
+                            <p class="card-text">
+                                @activity.Description
+                                <hr />
+                                <b>Docente referente:</b> @activity.DocenteReferente?.Email<br />
+                                <b>Periodo:</b> @activity.Periodo<br />
+                                <b>Soggetto ospitante:</b> @activity.SoggettoOspitante<br />
+                                <b>Sede attività:</b> @activity.SedeAttivita<br />
+                                <b>Ore complessive:</b> @activity.OreComplessive<br />
+                                <b>Tipologia:</b> @activity.Tipologia<br />
+                            </p>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

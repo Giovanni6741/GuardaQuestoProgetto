@@ -1,0 +1,87 @@
+﻿@page
+@model PariniFSL.Pages.Admin.CreateUserModel
+@{
+	ViewData["Title"] = "Nuovo utente";
+}
+
+<h1>Nuovo utente</h1>
+<hr />
+
+<form method="post">
+	<div asp-validation-summary="ModelOnly"
+		class="text-danger mb-3"></div>
+
+	<div class="mb-3">
+		<label asp-for="Input.Email" class="form-label">
+			Email del nuovo utente:
+		</label>
+
+		<input asp-for="Input.Email"
+			   type="email"
+			   class="form-control" />
+
+		<span asp-validation-for="Input.Email"
+			  class="text-danger"></span>
+
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="Input.Password" class="form-label">
+			Inserisci la password scelta per il nuovo utente
+		</label>
+
+		<input asp-for="Input.Password"
+			   type="password"
+			   class="form-control" />
+
+		<span asp-validation-for="Input.Password"
+			  class="text-danger"></span>
+
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="Input.ConfirmPassword" class="form-label">
+			Conferma la password scelta:
+		</label>
+
+		<input asp-for="Input.ConfirmPassword"
+		       type="password"
+			   class="form-control" />
+
+		<span asp-validation-for="Input.ConfirmPassword"
+			  class="text-danger"></span>
+
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="Input.Role" class="form-label">
+			Seleziona il ruolo scelto per l'utente:
+		</label>
+
+		<select asp-for="Input.Role"
+			    asp-items="Model.Roles"
+				class="form-select">
+
+			<option value="">
+				-- Seleziona un ruolo --
+			</option>
+
+		</select>
+
+		<span asp-validation-for="Input.Role"
+			  class="text-danger"></span>
+		
+	</div>
+
+	<div class="mt-4">
+		<button type="submit" class="btn btn-primary">
+			Crea utente
+		</button>
+
+		<a asp-page="/Admin/Users" class="btn btn-secondary">
+			Annulla
+		</a>
+
+	</div>
+
+</form>

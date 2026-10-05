@@ -1,0 +1,141 @@
+﻿@page
+@model PariniFSL.Pages.Activities.CreateModel
+
+@{
+ViewData["Title"] = "Nuova attività";
+}
+
+<h1>Nuova attività</h1> <hr /> <form method="post">
+<div asp-validation-summary="ModelOnly"
+     class="text-danger mb-3"></div>
+
+<div class="mb-3">
+    <label asp-for="Activity.Title" class="form-label">
+        Titolo
+    </label>
+
+    <input asp-for="Activity.Title"
+           class="form-control" />
+
+    <span asp-validation-for="Activity.Title"
+          class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Activity.Description"
+           class="form-label">
+        Descrizione
+    </label>
+
+    <textarea asp-for="Activity.Description"
+              class="form-control"
+              rows="5"></textarea>
+
+    <span asp-validation-for="Activity.Description"
+          class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Activity.SoggettoOspitante"
+           class="form-label">
+        Soggetto ospitante
+    </label>
+
+    <input asp-for="Activity.SoggettoOspitante"
+           class="form-control" />
+
+    <span asp-validation-for="Activity.SoggettoOspitante"
+          class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Activity.OreComplessive"
+           class="form-label">
+        Ore complessive
+    </label>
+
+    <input asp-for="Activity.OreComplessive"
+           type="number"
+           min="1"
+           class="form-control" />
+
+    <span asp-validation-for="Activity.OreComplessive"
+          class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Activity.SedeAttivita"
+           class="form-label">
+        Sede dell'attività
+    </label>
+
+    <input asp-for="Activity.SedeAttivita"
+           class="form-control" />
+
+    <span asp-validation-for="Activity.SedeAttivita"
+          class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Activity.Periodo"
+           class="form-label">
+        Periodo
+    </label>
+
+    <input asp-for="Activity.Periodo"
+           class="form-control" />
+
+    <span asp-validation-for="Activity.Periodo"
+          class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Activity.DocenteReferenteId"
+           class="form-label">
+        Docente referente
+    </label>
+
+    <select asp-for="Activity.DocenteReferenteId"
+            asp-items="Model.Referenti"
+            class="form-select">
+
+        <option value="">
+            -- Seleziona un referente --
+        </option>
+
+    </select>
+
+    <span asp-validation-for="Activity.DocenteReferenteId"
+          class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Activity.Tipologia"
+           class="form-label">
+        Tipologia
+    </label>
+
+    <input asp-for="Activity.Tipologia"
+           class="form-control" />
+
+    <span asp-validation-for="Activity.Tipologia"
+          class="text-danger"></span>
+</div>
+
+<div class="mt-4">
+    <button type="submit"
+            class="btn btn-primary">
+        Crea attività
+    </button>
+
+    <a asp-page="Index"
+       class="btn btn-secondary ms-2">
+        Annulla
+    </a>
+</div>
+
+</form>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

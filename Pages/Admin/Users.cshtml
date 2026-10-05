@@ -1,0 +1,52 @@
+﻿@page
+@model PariniFSL.Pages.Admin.UsersModel
+
+@{
+    ViewData["Title"] = "Gestione utenti";
+}
+
+<h1>Gestione utenti</h1>
+
+<a asp-page="/Admin/CreateUser" class="primary-button">Nuovo utente</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Nome utente</th>
+            <th>Ruoli</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.UserName</td>
+                <td>
+                    @foreach (var role in Model.UserRoles[user.Id])
+                    {
+                        <span>@role</span>
+                    }
+                </td>
+                <td>
+                    @if (user.Id != Model.CurrentUserId)
+                    {
+                        <a asp-page="EditUser"
+                          asp-route-id="@user.Id"
+                          class="btn btn-sm btn-primary">
+                            Modifica ruolo
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">
+                            Account corrente
+                        </span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

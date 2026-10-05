@@ -1,0 +1,45 @@
+﻿@page
+@model PariniFSL.Pages.Admin.EditUserModel;
+
+@{
+    ViewData["Title"] = "Modifica utente";
+}
+
+<h1>Modifica utente</h1>
+
+<p>
+    <strong>Email:</strong> @Model.User?.Email
+</p>
+
+<form method="post">
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="SelectedRole" class="form-label">
+            Ruolo
+        </label>
+
+        <select asp-for="SelectedRole"
+                class="form-select">
+
+            <option value="">-- Seleziona un ruolo --</option>
+
+            @foreach (var role in Model.Roles)
+            {
+                <option value="@role">@role</option>
+            }
+
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salva
+    </button>
+
+    <a asp-page="Users" class="btn btn-secondary">
+        Annulla
+    </a>
+
+</form>
