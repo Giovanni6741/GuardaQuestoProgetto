@@ -1,0 +1,68 @@
+﻿@page
+@model PariniFSL.Pages.Admin.EditClassModel
+
+@{
+    ViewData["Title"] = "Modifica classe";
+}
+
+<div class="container">
+
+    <h1 class="mb-4">Modifica classe</h1>
+
+    <form method="post">
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3">
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Grade"
+                   class="form-label">
+                Anno
+            </label>
+
+            <select asp-for="Input.Grade"
+                    class="form-select">
+
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+
+            </select>
+
+            <span asp-validation-for="Input.Grade"
+                  class="text-danger">
+            </span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Section"
+                   class="form-label">
+                Sezione
+            </label>
+
+            <input asp-for="Input.Section"
+                   class="form-control" />
+
+            <span asp-validation-for="Input.Section"
+                  class="text-danger">
+            </span>
+        </div>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Salva modifiche
+        </button>
+
+        <a asp-page="/Admin/Classes"
+           class="btn btn-secondary">
+            Annulla
+        </a>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

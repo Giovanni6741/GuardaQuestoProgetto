@@ -73,6 +73,22 @@
 		
 	</div>
 
+	<div class="mb-3">
+		<label asp-for="Input.SchoolClassId" class="form-label">
+			Classe
+		</label>
+
+		<select asp-for="Input.SchoolClassId"
+                asp-items="Model.SchoolClasses"
+               class="form-select">
+			<option value="">-- Seleziona una classe --</option>
+		</select>
+
+		<span asp-validation-for="Input.SchoolClassId"
+              class="text-danger"></span>
+	</div>
+
+
 	<div class="mt-4">
 		<button type="submit" class="btn btn-primary">
 			Crea utente

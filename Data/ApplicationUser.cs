@@ -1,6 +1,11 @@
 using Microsoft.AspNetCore.Identity;
+using PariniFSL.Models;
+
 namespace PariniFSL.Data;
-// Add profile data for application users by adding properties to the ApplicationUser class
+
 public class ApplicationUser : IdentityUser
 {
+    public int? SchoolClassId { get; set; }
+
+    public SchoolClass? SchoolClass { get; set; }
 }

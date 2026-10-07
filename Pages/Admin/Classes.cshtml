@@ -1,0 +1,74 @@
+﻿@page
+@model PariniFSL.Pages.Admin.ClassesModel
+
+@{
+    ViewData["Title"] = "Classi";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Classi</h1>
+
+        <a asp-page="/Admin/CreateClass"
+           class="btn btn-primary">
+            + Nuova classe
+        </a>
+    </div>
+
+    @if (Model.Classes.Count == 0)
+    {
+        <div class="alert alert-info">
+            Non sono ancora state create classi.
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Classe</th>
+                    <th>Studenti</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var schoolClass in Model.Classes)
+                {
+                    <tr>
+                        <td>
+                            <strong>
+                                @schoolClass.Grade@schoolClass.Section
+                            </strong>
+                        </td>
+
+                        <td>
+                            @schoolClass.Students.Count
+                        </td>
+
+                        <td>
+                            <a asp-page="/Admin/EditClass"
+                               asp-route-id="@schoolClass.Id"
+                               class="btn btn-sm btn-secondary">
+                                Modifica
+                            </a>
+
+                            <form method="post"
+                                  asp-page-handler="Delete"
+                                  asp-route-id="@schoolClass.Id"
+                                  class="d-inline"
+                                  onsubmit="return confirm('Eliminare questa classe? Gli studenti non verranno eliminati.');">
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-danger">
+                                    Elimina
+                                </button>
+
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

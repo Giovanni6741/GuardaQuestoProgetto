@@ -14,19 +14,24 @@ public class CreateUserModel : PageModel
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly ApplicationDbContext _context;
 
     public CreateUserModel(
         UserManager<ApplicationUser> userManager,
-        RoleManager<IdentityRole> roleManager)
+        RoleManager<IdentityRole> roleManager,
+        ApplicationDbContext context)
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _context = context;
     }
 
     [BindProperty]
     public InputModel Input { get; set; } = new();
 
     public List<SelectListItem> Roles { get; set; } = new();
+
+    public List<SelectListItem> SchoolClasses { get; set; } = new();
 
     public class InputModel
     {
@@ -45,16 +50,18 @@ public class CreateUserModel : PageModel
 
         [Required(ErrorMessage = "Devi selezionare un ruolo.")]
         public string Role { get; set; } = string.Empty;
+
+        public int? SchoolClassId { get; set; }
     }
 
     public async Task OnGetAsync()
     {
-        await LoadRolesAsync();
+        await LoadDataAsync();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        await LoadRolesAsync();
+        await LoadDataAsync();
 
         if (!ModelState.IsValid)
         {
@@ -83,11 +90,42 @@ public class CreateUserModel : PageModel
             return Page();
         }
 
+        // Solo gli studenti possono avere una classe.
+        if (Input.Role == "Studente")
+        {
+            if (!Input.SchoolClassId.HasValue)
+            {
+                ModelState.AddModelError(
+                    "Input.SchoolClassId",
+                    "Devi selezionare una classe per lo studente.");
+
+                return Page();
+            }
+
+            var schoolClass = await _context.SchoolClasses
+                .FindAsync(Input.SchoolClassId.Value);
+
+            if (schoolClass == null)
+            {
+                ModelState.AddModelError(
+                    "Input.SchoolClassId",
+                    "La classe selezionata non esiste.");
+
+                return Page();
+            }
+        }
+        else
+        {
+            // Docenti, referenti e admin non appartengono a una classe.
+            Input.SchoolClassId = null;
+        }
+
         var user = new ApplicationUser
         {
             UserName = Input.Email,
             Email = Input.Email,
-            EmailConfirmed = true
+            EmailConfirmed = true,
+            SchoolClassId = Input.SchoolClassId
         };
 
         var result = await _userManager.CreateAsync(
@@ -112,9 +150,6 @@ public class CreateUserModel : PageModel
 
         if (!roleResult.Succeeded)
         {
-            // Se l'assegnazione del ruolo fallisce,
-            // eliminiamo l'utente appena creato per evitare
-            // di lasciare un account senza ruolo.
             await _userManager.DeleteAsync(user);
 
             foreach (var error in roleResult.Errors)
@@ -130,7 +165,7 @@ public class CreateUserModel : PageModel
         return RedirectToPage("/Admin/Users");
     }
 
-    private async Task LoadRolesAsync()
+    private async Task LoadDataAsync()
     {
         Roles = await _roleManager.Roles
             .OrderBy(r => r.Name)
@@ -138,6 +173,16 @@ public class CreateUserModel : PageModel
             {
                 Value = r.Name!,
                 Text = r.Name!
+            })
+            .ToListAsync();
+
+        SchoolClasses = await _context.SchoolClasses
+            .OrderBy(c => c.Grade)
+            .ThenBy(c => c.Section)
+            .Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = $"{c.Grade}{c.Section}"
             })
             .ToListAsync();
     }

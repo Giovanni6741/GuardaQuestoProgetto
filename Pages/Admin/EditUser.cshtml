@@ -34,6 +34,22 @@
         </select>
     </div>
 
+    <div class="mb-3">
+        <label asp-for="SelectedSchoolClassId" class="form-label">
+            Classe
+        </label>
+
+        <select asp-for="SelectedSchoolClassId"
+                asp-items="Model.SchoolClasses"
+                class="form-select">
+            <option value="">-- Nessuna classe --</option>
+        </select>
+
+        <span asp-validation-for="SelectedSchoolClassId"
+              class="text-danger"></span>
+    </div>
+
+
     <button type="submit" class="btn btn-primary">
         Salva
     </button>
