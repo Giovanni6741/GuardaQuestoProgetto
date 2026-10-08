@@ -17,22 +17,56 @@ else
         @foreach (var activity in Model.Activities)
         {
             <div class="col-md-6 mb-3">
-                <div class="card">
-                    <div class="card-body">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column">
+
                         <h2 class="card-title">@activity.Title</h2>
 
                         @if (!string.IsNullOrWhiteSpace(activity.Description))
                         {
                             <p class="card-text">
                                 @activity.Description
-                                <hr />
-                                <b>Docente referente:</b> @activity.DocenteReferente?.Email<br />
-                                <b>Periodo:</b> @activity.Periodo<br />
-                                <b>Soggetto ospitante:</b> @activity.SoggettoOspitante<br />
-                                <b>Sede attività:</b> @activity.SedeAttivita<br />
-                                <b>Ore complessive:</b> @activity.OreComplessive<br />
-                                <b>Tipologia:</b> @activity.Tipologia<br />
                             </p>
+                        }
+
+                        <hr />
+
+                        <div class="mb-3">
+                            <b>Docente referente:</b>
+                            @activity.DocenteReferente?.Email
+                            <br />
+
+                            <b>Periodo:</b>
+                            @activity.Periodo
+                            <br />
+
+                            <b>Soggetto ospitante:</b>
+                            @activity.SoggettoOspitante
+                            <br />
+
+                            <b>Sede attività:</b>
+                            @activity.SedeAttivita
+                            <br />
+
+                            <b>Ore complessive:</b>
+                            @activity.OreComplessive
+                            <br />
+
+                            <b>Tipologia:</b>
+                            @activity.Tipologia
+                        </div>
+
+                        @if (User.IsInRole("Admin") ||
+                             User.IsInRole("Referente") ||
+                             User.IsInRole("Docente tutor"))
+                        {
+                            <div class="mt-auto">
+                                <a asp-page="./Manage"
+                                   asp-route-id="@activity.Id"
+                                   class="btn btn-primary">
+                                    Gestisci
+                                </a>
+                            </div>
                         }
 
                     </div>

@@ -19,6 +19,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
 
+        // =========================
+        // SCHOOL CLASS
+        // =========================
+
         builder.Entity<SchoolClass>()
             .HasIndex(c => new { c.Grade, c.Section })
             .IsUnique();
@@ -28,5 +32,47 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .WithOne(u => u.SchoolClass)
             .HasForeignKey(u => u.SchoolClassId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        // =========================
+        // ACTIVITY
+        // =========================
+
+        builder.Entity<Activity>()
+            .HasOne(a => a.DocenteReferente)
+            .WithMany()
+            .HasForeignKey(a => a.DocenteReferenteId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
+        // =========================
+        // ENROLLMENT
+        // =========================
+
+        // Uno studente non può essere iscritto
+        // due volte alla stessa attività.
+        builder.Entity<Enrollment>()
+            .HasIndex(e => new { e.StudentId, e.ActivityId })
+            .IsUnique();
+
+        // Studente -> Enrollment
+        builder.Entity<Enrollment>()
+            .HasOne(e => e.Student)
+            .WithMany()
+            .HasForeignKey(e => e.StudentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Utente che ha effettuato l'iscrizione -> Enrollment
+        builder.Entity<Enrollment>()
+            .HasOne(e => e.EnrolledBy)
+            .WithMany()
+            .HasForeignKey(e => e.EnrolledById)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Activity -> Enrollment
+        builder.Entity<Enrollment>()
+            .HasOne(e => e.Activity)
+            .WithMany()
+            .HasForeignKey(e => e.ActivityId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
